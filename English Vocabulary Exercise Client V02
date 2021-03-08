@@ -1,0 +1,89 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+import datetime
+import requests
+
+#a = requests.get()
+root = tk.Tk()
+root.title('成風英文單字')
+root.iconbitmap('001.ico')
+root.geometry('400x400')
+photo = tk.PhotoImage(file = "IMAG2432.png")
+Frame = tk.Frame(root).pack()
+
+
+bigbg = tk.Label(Frame,bg='skyblue',height=400,width=400)
+bigbg.pack()
+
+var = tk.StringVar()
+varchi = tk.StringVar()
+
+tk.Entry(root,textvariable=var).place(x=125,y=101)
+tk.Entry(root,textvariable=varchi).place(x=125,y=151)
+
+textbg1 = tk.Label(root,text ='請輸入英文！',bg='skyblue')
+textbg1.place(x=40,y=100)
+textbg2 = tk.Label(root,text ='請輸入中文！',bg='skyblue')
+textbg2.place(x=40,y=150)
+
+def bg1():
+
+    ran = random.choices(['yellow','red','blue'])
+    ran2 = random.choices(['pink','skyblue','green'])
+    ran3 = random.choices(['cyan','mediumslateblue','lime'])
+    print(ran)
+    bigbg['image'] = ''
+    bigbg['bg'] = ran
+    textbg1['bg'] = ran2
+    textbg2['bg'] = ran3
+
+def bg2():
+   
+    # randombg1 = [b1,b2,b3]
+    bigbg['image'] = photo
+    bigbg.place(x=-2,y=-3)
+    ran2 = random.choices(['pink','skyblue','green'])
+    ran3 = random.choices(['cyan','mediumslateblue','lime'])
+    textbg1['bg'] = ran2
+    textbg2['bg'] = ran3
+    
+img_bg1 = tk.Button(root,text='變更顏色背景',height=2,width=12,command=bg1)
+img_bg1.place(x=50,y=20)
+img_bg1 = tk.Button(root,text='變更圖形背景',height=2,width=12,command=bg2)
+img_bg1.place(x=160,y=20)
+img_bg1 = tk.Button(root,text='匯出Excel報表',height=2,width=12,command=bg2)
+img_bg1.place(x=270,y=20)
+
+
+def but():
+
+    with open ("英文單字.txt",'a' , encoding='utf-8') as engtext:
+        eng = var.get()
+        chi = varchi.get()
+        engtext.write("\n"+eng+" "+chi)
+        print(eng,chi)
+        chis = (all(map(lambda c:'\u4e00' <= c <= '\u9fa5',chi)))
+        n01 = eng.isalpha() == False
+      
+        if (eng=="") and (chi == ""):
+                messagebox.showinfo("錯誤!","填寫不完全!")
+                print("Error")
+        elif eng =="":
+            messagebox.showinfo("輸入未完","請輸入英文!")
+        elif chi =="":
+            messagebox.showinfo('輸入未完','請輸入中文!')
+        elif (eng==False) or (chis == False):
+             messagebox.showinfo('未完成！','請輸入正確的英文和中文！')
+        elif eng.isalpha() == False:
+            messagebox.showinfo('英文輸入未完','必須是全英文!')
+        elif chis == False:
+            messagebox.showinfo('中文輸入未完','必須是全中文!')
+        elif chis and n01 == False:
+            print('123')
+        elif (eng==True) and (chi == True):
+             messagebox.showinfo('完成！','寫入完成！')
+             
+tk.Button(root,text ='Submit！',command=but).place(x=165,y=200)
+
+root.mainloop()
